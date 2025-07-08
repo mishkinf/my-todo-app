@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [animatingItems, setAnimatingItems] = useState(new Set());
+  const [deletingItems, setDeletingItems] = useState(new Set());
 
   const addTodo = () => {
     if (inputValue.trim() !== '') {
@@ -14,12 +16,32 @@ function App() {
         completed: false
       };
       setTodos([...todos, newTodo]);
+      setAnimatingItems(new Set([...animatingItems, newTodo.id]));
       setInputValue('');
+      
+      // Remove animation class after animation completes
+      setTimeout(() => {
+        setAnimatingItems(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(newTodo.id);
+          return newSet;
+        });
+      }, 300);
     }
   };
 
   const deleteTodo = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+    setDeletingItems(new Set([...deletingItems, id]));
+    
+    // Remove from todos after animation completes
+    setTimeout(() => {
+      setTodos(todos.filter(todo => todo.id !== id));
+      setDeletingItems(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(id);
+        return newSet;
+      });
+    }, 300);
   };
 
   const toggleComplete = (id) => {
@@ -60,12 +82,20 @@ function App() {
         />
       </div>
       <ul className="todo-list">
-        {filteredTodos.map(todo => (
-          <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-            <span onClick={() => toggleComplete(todo.id)}>{todo.text}</span>
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-          </li>
-        ))}
+        {filteredTodos.map(todo => {
+          const isAnimating = animatingItems.has(todo.id);
+          const isDeleting = deletingItems.has(todo.id);
+          
+          return (
+            <li 
+              key={todo.id} 
+              className={`todo-item ${todo.completed ? 'completed' : ''} ${isAnimating ? 'todo-item-enter' : ''} ${isDeleting ? 'todo-item-exit' : ''}`}
+            >
+              <span onClick={() => toggleComplete(todo.id)}>{todo.text}</span>
+              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
