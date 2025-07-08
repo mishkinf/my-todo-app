@@ -95,7 +95,7 @@ function App() {
                 {todo.completed && <span className="checkmark">✓</span>}
                 {todo.text}
               </span>
-              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+              <button onClick={() => deleteTodo(todo.id)}>X</button>
             </li>
           );
         })}
