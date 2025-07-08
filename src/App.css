@@ -124,16 +124,26 @@ h1 {
   transform: translateY(-1px);
 }
 
-.todo-item span {
+.todo-item .todo-text {
   flex: 1;
   cursor: pointer;
   padding: 0.25rem 0;
   font-size: 1rem;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.todo-item span:hover {
+.todo-item .todo-text:hover {
   color: #4299e1;
+}
+
+.checkmark {
+  color: #48bb78;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-right: 0.25rem;
 }
 
 .todo-item.completed {

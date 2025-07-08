@@ -91,7 +91,10 @@ function App() {
               key={todo.id} 
               className={`todo-item ${todo.completed ? 'completed' : ''} ${isAnimating ? 'todo-item-enter' : ''} ${isDeleting ? 'todo-item-exit' : ''}`}
             >
-              <span onClick={() => toggleComplete(todo.id)}>{todo.text}</span>
+              <span onClick={() => toggleComplete(todo.id)} className="todo-text">
+                {todo.completed && <span className="checkmark">✓</span>}
+                {todo.text}
+              </span>
               <button onClick={() => deleteTodo(todo.id)}>Delete</button>
             </li>
           );
