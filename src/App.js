@@ -51,8 +51,16 @@ function App() {
         />
         <button onClick={addTodo}>Add</button>
       </div>
+      <div className="search-container">
+        <input
+          type="text"
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          placeholder="Search todos..."
+        />
+      </div>
       <ul className="todo-list">
-        {todos.map(todo => (
+        {filteredTodos.map(todo => (
           <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
             <span onClick={() => toggleComplete(todo.id)}>{todo.text}</span>
             <button onClick={() => deleteTodo(todo.id)}>Delete</button>
