@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [todos, setTodos] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   const addTodo = () => {
     if (inputValue.trim() !== '') {
@@ -32,6 +33,10 @@ function App() {
       addTodo();
     }
   };
+
+  const filteredTodos = todos.filter(todo =>
+    todo.text.toLowerCase().includes(searchValue.toLowerCase())
+  );
 
   return (
     <div className="app">
